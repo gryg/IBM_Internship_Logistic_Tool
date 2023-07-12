@@ -1,0 +1,57 @@
+TABLE students {
+  student_id INT [PRIMARY KEY]
+  username VARCHAR
+  email VAARCHAR
+  team_id INT [ref: - teams.team_id]
+  is_leader BOOLEAN
+  activity INT [ref: <> activities.activity_id] // 'many to many' relationship might be "useless" if we're making use of the associative table *students_activities_mapping*
+  join_date DATE
+}
+
+TABLE teams {
+  team_id INT [PRIMARY KEY]
+  name_team VARCHAR
+  leader_id INT [ref: - students.student_id]
+  activity INT [ref: > activities.activity_id]
+}
+
+TABLE mentors{
+  mentor_id INT [PRIMARY KEY]
+  username VARCHAR
+}
+
+TABLE activities {
+  activity_id INT [PRIMARY KEY]
+  name_activity VARCHAR
+  mentor INT [ref: <> mentors.mentor_id] // 'many to many' relationship might be "useless" if we're making use of the associative table *metnrors_activities_mapping*
+  // we assume that mentors can have multiple activies
+  // and that an activity can have multiple mentors
+}
+
+
+TABLE mentors_activities_mapping {
+  mentor_id INT [ref: > mentors.mentor_id]
+  activity_id INT [ref: > activities.activity_id]
+}
+
+TABLE students_activities_mapping {
+  student_id INT [ref: > students.student_id]
+  activity_id INT [ref: > activities.activity_id]
+}
+
+TABLE attendance {
+  attendance_id INT [PRIMARY KEY]
+  user_id INT [ref: > students.student_id]
+  activity_id INT [ref: > activities.activity_id]
+  attendance BOOLEAN
+  date DATE
+}
+
+TABLE grades {
+    grade_id INT [PRIMARY KEY]
+    student_id INT [ref: > students.student_id]
+    activity_id INT [ref: > activities.activity_id]
+    grade DECIMAL
+    grade_from INT [ref: > mentors.mentor_id]
+    comment VARCHAR [note: 'optional comment']
+}
