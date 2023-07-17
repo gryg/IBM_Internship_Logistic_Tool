@@ -1,0 +1,50 @@
+ TABLE students {
+  id INT [PRIMARY KEY]
+  username VARCHAR
+  email VAARCHAR
+  teamID INT [ref: - teams.id]
+  isLeader BOOLEAN
+  joinDate STRING //https://www.ibm.com/docs/en/app-connect/11.0.0?topic=function-formatting-parsing-datetimes-as-strings
+}
+
+TABLE teams {
+  id INT [PRIMARY KEY]
+  teamName VARCHAR
+  leaderID INT [ref: - students.id]
+  activity INT [ref: > activities.id]
+}
+
+TABLE mentors{
+  id INT [PRIMARY KEY]
+  username VARCHAR
+}
+
+// As specified in one of the first meetings, mentors are not assigned to activities.
+
+TABLE activities {
+  id INT [PRIMARY KEY]
+  activityName VARCHAR
+}
+
+TABLE attendance {
+  id INT [PRIMARY KEY]
+  studentID INT [ref: > students.id]
+  sessionID INT [ref: > session.id]
+  mentorID INT [ref: > mentors.id]
+  attendance BOOLEAN
+}
+
+TABLE grades {
+    id INT [PRIMARY KEY]
+    studentID INT [ref: > students.id]
+    mentorID INT [ref: > mentors.id]
+    sessionID INT [ref: > session.id]
+    grade DECIMAL
+    comment VARCHAR [note: 'optional comment']
+}
+
+TABLE session {
+  id INT [PRIMARY KEY]
+  activityID INT [ref: > activities.id]
+  date STRING //https://www.ibm.com/docs/en/app-connect/11.0.0?topic=function-formatting-parsing-datetimes-as-strings
+} 
