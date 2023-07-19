@@ -10,6 +10,7 @@
 [Click to see the associated DBML File](docs/db/erd.dbml)
 [![Click me](docs/db/ERD_DbDiagram.png)](https://dbdiagram.io/d/64abdc5d02bd1c4a5ecb6d77)
 
-# Swagger API documentation
-[Click to see the corresponding .yaml file](docs/api/openapi.yaml)
-[![Click me](https://i.imgur.com/PLWc6re.gif)](https://gryg.github.io/IBM_Internship_Logistic_Tool_BE/#/)
+# Swagger API documentation  
+<!--v1 is this:https://i.imgur.com/PLWc6re.gif ; docs/api/openapi_v1.yaml -->
+[Click to see the corresponding .yaml file](docs/api/openapi_v2.yaml)
+[![Click me](https://i.imgur.com/NtLrAv4.gif)](https://gryg.github.io/IBM_Internship_Logistic_Tool_BE/#/)
