@@ -1,0 +1,616 @@
+openapi: 3.0.0
+info:
+  title: Team Management API
+  description: API for managing student teams and activities
+  version: 1.0.0
+servers:
+  - url: http://api.example.com/v1
+paths:
+
+  /activity/{activityId}/student/{studentId}/grade/:
+    get:
+      tags:
+        - Activity
+      summary: Get a student's list of grades for a given activity
+      description: Get a student's list of grades for a given activity
+      parameters:
+        - name: activityId
+          in: path
+          description: ID of the activity
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfGradesResponse'
+        '402':
+          description: Activity not found
+        '400':
+          description: Bad Request
+
+  /activity/{activityId}/student/{studentId}/attendance/:
+    get:
+      tags:
+        - Activity
+      summary: Get a student's list of attendances for a given activity
+      description: Get a student's list of attendances for a given activity
+      parameters:
+        - name: activityId
+          in: path
+          description: ID of the activity
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfAttendancesResponse'
+        '402':
+          description: Activity not found
+        '400':
+          description: Bad Request
+  /activity/{activityId}/session/{sessionId}/student/{studentId}/grade:
+    get:
+      tags:
+        - Activity
+      summary: Get a student's grade for a given session of an activity
+      description: Get a student's grade for a given session of an activity
+      parameters:
+        - name: activityId
+          in: path
+          description: ID of the activity
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+        - name: sessionId
+          in: path
+          description: Session ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeResponse'
+        '402':
+          description: Activity not found
+        '400':
+          description: Bad Request
+
+  /activity/{activityId}/session/{sessionId}/student/{studentId}/attendance:
+    get:
+      tags:
+        - Activity
+      summary: Get a student's attendance for a given session of an activity
+      description: Get a student's attendance for a given session of an activity
+      parameters:
+        - name: activityId
+          in: path
+          description: ID of the activity
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+        - name: sessionId
+          in: path
+          description: Session ID
+          required: true
+          schema:
+            type: string    
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceResponse'
+        '402':
+          description: Activity not found
+        '400':
+          description: Bad Request
+
+  /studentInfo:
+    get:
+      tags:
+        - Miscellaneous
+      summary: View student information(userName, ID, email,join date,status[leader/student])
+      description: view info
+      parameters:
+        - name: add
+          in: query
+          description: View student (flag)
+          required: true
+          schema:
+            type: string
+            enum: [id]
+        - name: studentId
+          in: query
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+      responses:
+        
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewStudentInfoResponse'
+        '404':
+          description: Team not found
+        '400':
+          description: Bad Request
+
+  /enroll:
+    post:
+      tags:
+        - TeamLeader Specific Actions
+      summary: Enroll a team in an activity
+      description: Enroll a team in an activity
+      parameters:
+        - name: teamId
+          in: query
+          description: ID of the team
+          required: true
+          schema:
+            type: string
+        - name: activityId
+          in: query
+          description: ID of the activity
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Enrolled
+        '404':
+          description: Team or activity not found
+        '400':
+          description: Bad Request
+
+  /add:
+    post:
+      tags:
+        - TeamLeader Specific Actions
+      summary: Add student to team
+      description: Add a new student to a specific team
+      parameters:
+        - name: teamId
+          in: query
+          description: ID of the team
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: query
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Team not found
+        '400':
+          description: Bad Request
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Perform user login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginResponse'
+
+  /logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      description: Perform user logout
+      responses:
+        '200':
+          description: OK
+
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: Get user profile
+      description: Retrieve the user's profile information
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+
+    put:
+      tags:
+        - Profile
+      summary: Update user profile
+      description: Update the user's profile information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+
+  /activity/{activityId}/teams:
+    get:
+      tags:
+        - Mentor
+      summary: Get teams by activity (mentor)
+      description: Retrieve teams based on activity search
+      parameters:
+        - name: activityId
+          in: path
+          description: Activity name for filtering teams
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamListResponse'
+        '400':
+          description: Bad Request
+
+  /teams/{teamId}:
+    get:
+      tags:
+        - Teams
+      summary: Get team details by ID
+      description: Retrieve details of a specific team
+      parameters:
+        - name: teamId
+          in: path
+          description: ID of the team
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDetailsResponse'
+        '404':
+          description: Team not found
+
+  /student/{studentId}:
+    delete:
+      tags:
+        - TeamLeader Specific Actions
+      summary: Delete student from team
+      description: Remove a student from a specific team
+      parameters:
+        - name: studentId
+          in: path
+          description: ID of the student
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Student not found
+
+  /mentors/teams/{teamId}/members:
+    get:
+      tags:
+      - Mentor
+      summary: Get team members
+      description: Retrieve all members of a specific team
+      parameters:
+        - name: teamId
+          in: path
+          description: ID of the team
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberListResponse'
+        '404':
+          description: Team not found
+
+  /mentor/teams:
+    get:
+      tags:
+      - Mentor
+      summary: Get all teams
+      description: Retrieve all teams and their details
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowTeamsResponse'
+        '400':
+          description: Bad request
+
+  /activity/{activityId}/session/{sessionId}/student/{studentId}/attendanceRecording:
+    put:
+      tags:
+        - Mentor
+      summary: Update attendance
+      description: Update the attendance record
+      parameters:
+        - name: activityId
+          in: path
+          description: Activity's ID
+          required: true
+          schema:
+            type: string
+        - name: sessionId
+          in: path
+          description: Session's ID
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          description: Student's ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceUpdateRequest'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: 404Error
+
+  /activity/{activityId}/session/{sessionId}/student/{studentId}/grading:
+    put:
+      tags:
+        - Mentor
+      summary: Grading
+      description: Grade/Update grade
+      parameters:
+        - name: activityId
+          in: path
+          description: Activity's ID
+          required: true
+          schema:
+            type: string
+        - name: sessionId
+          in: path
+          description: Session's ID
+          required: true
+          schema:
+            type: string
+        - name: studentId
+          in: path
+          description: Student's ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeRequest'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: 404Error
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+
+    UserLoginResponse:
+      type: object
+      properties:
+        user_type:
+          type: string
+        access_token:
+          type: string
+
+    UserProfileRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        photo:
+          type: string
+
+    UserProfileResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        photo:
+          type: string
+
+    TeamListResponse:
+      type: object
+      properties:
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamDetailsResponse'
+
+    TeamDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    ShowTeamsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        activity:
+          type: string
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/ViewStudentInfoResponse'
+    AddStudentRequest:
+      type: object
+      properties:
+        studentId:
+          type: string
+
+    ListOfGradesResponse:
+      type: object
+      properties:
+        grades:
+          type: array
+          items:
+            type: object
+            properties:
+              date: 
+                type: string
+              grade:
+                type: number
+            
+
+    ListOfAttendancesResponse:
+      type: object
+      properties:
+        attendances:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+              status:
+                type: boolean
+    AttendanceResponse:
+      type: object
+      properties:
+        date:
+          type: string
+        status:
+          type: boolean
+    GradeResponse:
+      type: object
+      properties:
+        date:
+          type: string
+        grade:
+          type: number
+
+    AttendanceUpdateRequest:
+      type: object
+      properties:
+        status:
+          type: boolean
+
+    GradeRequest:
+      type: object
+      properties:
+        grade:
+          type: number
+
+    MemberListResponse:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/ViewStudentInfoResponse'
+    ViewStudentInfoResponse:
+      type: object
+      properties:
+        userName:
+          type: string
+        studentId:
+          type: string
+        email:
+          type: string
+        joinDate:
+          type: string
+        isLeader:
+          type: boolean
+
