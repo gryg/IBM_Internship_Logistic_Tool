@@ -2,7 +2,7 @@ package com.ibm.internshipTool.models;
 
 import jakarta.persistence.*;
 @Entity
-@Table(name = "teams")
+@Table(name = "teams", schema="public")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

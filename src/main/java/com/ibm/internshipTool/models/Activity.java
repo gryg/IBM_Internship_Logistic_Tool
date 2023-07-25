@@ -3,10 +3,11 @@ package com.ibm.internshipTool.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "activities")
+@Table(name = "activities", schema="public")
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "activity_name")
