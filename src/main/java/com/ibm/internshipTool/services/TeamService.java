@@ -1,3 +1,8 @@
+package com.ibm.internshipTool.services;
+
+import com.ibm.internshipTool.repositories.TeamRepository;
+import org.springframework.stereotype.Service;
+
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;

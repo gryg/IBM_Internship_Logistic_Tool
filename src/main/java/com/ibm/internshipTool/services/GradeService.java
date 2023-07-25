@@ -1,3 +1,9 @@
+package com.ibm.internshipTool.services;
+
+
+import com.ibm.internshipTool.repositories.GradeRepository;
+import org.springframework.stereotype.Service;
+
 @Service
 public class GradeService {
     private final GradeRepository gradeRepository;

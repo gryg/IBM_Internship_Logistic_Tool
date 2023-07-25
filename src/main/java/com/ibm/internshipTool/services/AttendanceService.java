@@ -1,3 +1,8 @@
+package com.ibm.internshipTool.services;
+
+import com.ibm.internshipTool.repositories.AttendanceRepository;
+import org.springframework.stereotype.Service;
+
 @Service
 public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
