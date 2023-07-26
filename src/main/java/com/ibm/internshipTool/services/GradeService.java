@@ -15,5 +15,8 @@ public class GradeService {
     public GradeService(GradeRepository gradeRepository) {
         this.gradeRepository = gradeRepository;
     }
+    public List<Grade> getGradesByActivity(Long activityId) {
+        return gradeRepository.getGradesByActivity(activityId);
+    }
     // methods for CRUD operations or custom business logic
 }

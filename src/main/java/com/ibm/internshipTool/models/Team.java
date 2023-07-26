@@ -1,6 +1,9 @@
 package com.ibm.internshipTool.models;
 
 import jakarta.persistence.*;
+
+import java.util.List;
+
 @Entity
 @Table(name = "teams", schema="public")
 public class Team {
@@ -20,8 +23,7 @@ public class Team {
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    public Team() {
-    }
+//    private List<Student> members; // Add this field
 
     public Team(Long id, String teamName, Student leader, Activity activity) {
         this.id = id;
@@ -60,5 +62,26 @@ public class Team {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public void setActivityId(Long activityId) {
+        if (this.activity == null) {
+            this.activity = new Activity();
+        }
+        this.activity.setId(activityId);
+    }
+    public Long getActivityId() {
+        if (activity == null) {
+            return null;
+        }
+        return activity.getId();
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }

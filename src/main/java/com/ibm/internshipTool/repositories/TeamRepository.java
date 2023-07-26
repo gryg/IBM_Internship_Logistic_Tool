@@ -4,7 +4,12 @@ import com.ibm.internshipTool.models.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
-        // methods to be added
+    List<Team> findByActivityId(Long activityId);
+    Optional<Team> findByActivityIdAndLeaderId(Long activityId, Long leaderId);
+
 }

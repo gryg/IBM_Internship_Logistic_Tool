@@ -58,4 +58,6 @@ public class ViewStudentInfoResponse {
     public void setLeader(boolean leader) {
         isLeader = leader;
     }
+
+    public void setIsLeader(boolean leader) { this.isLeader = isLeader;    }
 }
