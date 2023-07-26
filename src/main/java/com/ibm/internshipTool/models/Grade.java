@@ -25,7 +25,7 @@ public class Grade {
     private Session session;
 
     //@Column ?
-    private DecimalFormat grade;
+    private Double grade;
 
     //@Column ?
     private String comment;
@@ -33,7 +33,7 @@ public class Grade {
     public Grade() {
     }
 
-    public Grade(Long id, Student student, Mentor mentor, Session session, DecimalFormat grade, String comment) {
+    public Grade(Long id, Student student, Mentor mentor, Session session, Double grade, String comment) {
         this.id = id;
         this.student = student;
         this.mentor = mentor;
@@ -74,11 +74,11 @@ public class Grade {
         this.session = session;
     }
 
-    public DecimalFormat getGrade() {
+    public Double getGrade() {
         return grade;
     }
 
-    public void setGrade(DecimalFormat grade) {
+    public void setGrade(Double grade) {
         this.grade = grade;
     }
 

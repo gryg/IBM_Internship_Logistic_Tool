@@ -15,11 +15,5 @@ public class GradeService {
     public GradeService(GradeRepository gradeRepository) {
         this.gradeRepository = gradeRepository;
     }
-
-    public List<Grade> getAllGradeByActivity(String activityName) {
-        List<Grade> grades;
-
-        return grades;
-    }
     // methods for CRUD operations or custom business logic
 }
