@@ -21,8 +21,10 @@ public interface GradeRepository extends JpaRepository<Grade,Long> {
 //            "WHERE a.id = :activityId")
 
     Optional<Grade> findByStudentIdAndSessionId(Long studentId, Long sessionId);
+    List<Grade> findBySessionActivityId(Long activityId);
 
-    List<Grade> getGradesByActivity(@Param("activityId") Long activityId);
+    @Query("SELECT g FROM Grade g WHERE g.session.activity.id = :activityId")
+    List<Grade> getGradesByActivity(Long activityId);
 
 //    List<Grade> getGradesByActivity();
 }

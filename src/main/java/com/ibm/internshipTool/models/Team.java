@@ -2,8 +2,6 @@ package com.ibm.internshipTool.models;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "teams", schema="public")
 public class Team {
@@ -56,32 +54,32 @@ public class Team {
         this.leader = leader;
     }
 
-    public Activity getActivity() {
+    public Activity getActivityId() {
         return activity;
     }
 
-    public void setActivity(Activity activity) {
+    public void setActivityId(Activity activity) {
         this.activity = activity;
     }
 
-    public void setActivityId(Long activityId) {
-        if (this.activity == null) {
-            this.activity = new Activity();
-        }
-        this.activity.setId(activityId);
-    }
-    public Long getActivityId() {
-        if (activity == null) {
-            return null;
-        }
-        return activity.getId();
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
+//    public void setActivityId(Long activityId) {
+//        if (this.activityId == null) {
+//            this.activityId = new Activity();
+//        }
+//        this.activityId.setId(activityId);
+//    }
+//    public Long getActivityId() {
+//        if (activityId == null) {
+//            return null;
+//        }
+//        return activityId.getId();
+//    }
+//
+//    public List<Student> getStudents() {
+//        return students;
+//    }
+//
+//    public void setStudents(List<Student> students) {
+//        this.students = students;
+//    }
 }

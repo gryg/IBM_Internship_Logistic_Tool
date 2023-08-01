@@ -1,7 +1,9 @@
 package com.ibm.internshipTool.services;
 
+import com.ibm.internshipTool.models.Activity;
 import com.ibm.internshipTool.models.Student;
 import com.ibm.internshipTool.models.Team;
+import com.ibm.internshipTool.repositories.ActivityRepository;
 import com.ibm.internshipTool.repositories.StudentRepository;
 import com.ibm.internshipTool.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,14 @@ public class TeamLeaderService {
 
     private final TeamRepository teamRepository;
     private final StudentRepository studentRepository;
+    private final ActivityRepository activityRepository; // Add this field
+
 
     @Autowired
-    public TeamLeaderService(TeamRepository teamRepository, StudentRepository studentRepository) {
+    public TeamLeaderService(TeamRepository teamRepository, StudentRepository studentRepository, ActivityRepository activityRepository) {
         this.teamRepository = teamRepository;
         this.studentRepository = studentRepository;
+        this.activityRepository = activityRepository;
     }
 
     @Transactional
@@ -29,7 +34,13 @@ public class TeamLeaderService {
         }
 
         // Enroll the team in the activity by setting the activity_id
-        team.setActivityId(activityId);
+
+        // Find the activity by its ID
+        Activity activity = activityRepository.findById(activityId).orElse(null);
+        if (activity == null) {
+            return false;
+        }
+        team.setActivityId(activity);
         teamRepository.save(team);
         return true;
     }

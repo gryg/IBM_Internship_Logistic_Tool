@@ -1,6 +1,4 @@
 package com.ibm.internshipTool.services;
-package com.ibm.internshipTool.services;
-
 import com.ibm.internshipTool.exceptions.SessionNotFoundException;
 import com.ibm.internshipTool.exceptions.StudentNotFoundException;
 import com.ibm.internshipTool.exceptions.TeamNotFoundException;
@@ -12,6 +10,7 @@ import com.ibm.internshipTool.responses.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,18 +38,39 @@ public class MentorService {
         this.gradeRepository = gradeRepository;
     }
 
+//    public ShowTeamsResponse getAllTeams() {
+//        List<Team> teams = teamRepository.findAll();
+//        List<ShowTeamsResponse.TeamDetails> teamDetailsList = teams.stream()
+//                .map(team -> {
+//                    List<ViewStudentInfoResponse> members = team.getStudents().stream()
+//                            .map(this::convertToViewStudentInfoResponse)
+//                            .collect(Collectors.toList());
+//
+//                    ShowTeamsResponse.TeamDetails teamDetails = new ShowTeamsResponse.TeamDetails();
+//                    teamDetails.setId(team.getId());
+//                    teamDetails.setName(team.getTeamName());
+//                    teamDetails.setActivity(team.getActivity().getActivityName());
+//                    teamDetails.setMembers(members);
+//                    return teamDetails;
+//                })
+//                .collect(Collectors.toList());
+//
+//        ShowTeamsResponse response = new ShowTeamsResponse();
+//        response.setTeams(teamDetailsList);
+//        return response;
+//    }
     public ShowTeamsResponse getAllTeams() {
         List<Team> teams = teamRepository.findAll();
         List<ShowTeamsResponse.TeamDetails> teamDetailsList = teams.stream()
                 .map(team -> {
-                    List<ViewStudentInfoResponse> members = team.getStudents().stream()
+                    List<ViewStudentInfoResponse> members = studentRepository.findAllByTeamId(team.getId()).stream()
                             .map(this::convertToViewStudentInfoResponse)
                             .collect(Collectors.toList());
 
                     ShowTeamsResponse.TeamDetails teamDetails = new ShowTeamsResponse.TeamDetails();
                     teamDetails.setId(team.getId());
                     teamDetails.setName(team.getTeamName());
-                    teamDetails.setActivity(team.getActivity().getActivityName());
+                    teamDetails.setActivity(team.getActivityId().getActivityName());
                     teamDetails.setMembers(members);
                     return teamDetails;
                 })
@@ -61,11 +81,25 @@ public class MentorService {
         return response;
     }
 
+//    public List<TeamDetailsResponse> getAllTeams() {
+//        List<Team> teams = teamRepository.findAll();
+//        List<TeamDetailsResponse> teamDetailsList = teams.stream()
+//                .map(this::convertToTeamDetailsResponse)
+//                .collect(Collectors.toList());
+//        return teamDetailsList;
+//    }
+    private TeamDetailsResponse convertToTeamDetailsResponse(Team team) {
+        TeamDetailsResponse teamDetails = new TeamDetailsResponse();
+        teamDetails.setId(team.getId());
+        teamDetails.setTeamName(team.getTeamName());
+        return teamDetails;
+    }
+
     public TeamListResponse getTeamsByActivity(Long activityId) {
         List<Team> teams = teamRepository.findByActivityId(activityId);
-        List<TeamDetailsResponse> teamDetailsList = teams.stream()
+        List<TeamListResponse.TeamDetailsResponse> teamDetailsList = teams.stream()
                 .map(team -> {
-                    TeamDetailsResponse teamDetails = new TeamDetailsResponse();
+                    TeamListResponse.TeamDetailsResponse teamDetails = new TeamListResponse.TeamDetailsResponse();
                     teamDetails.setId(team.getId());
                     teamDetails.setName(team.getTeamName());
                     return teamDetails;
@@ -78,12 +112,9 @@ public class MentorService {
     }
 
     public MemberListResponse getTeamMembers(Long teamId) {
-        Team team = teamRepository.findById(teamId).orElse(null);
-        if (team == null) {
-            throw new TeamNotFoundException("Team not found with ID: " + teamId);
-        }
+        List<Student> students = studentRepository.findAllByTeamId(teamId);
 
-        List<ViewStudentInfoResponse> members = team.getStudents().stream()
+        List<ViewStudentInfoResponse> members = students.stream()
                 .map(this::convertToViewStudentInfoResponse)
                 .collect(Collectors.toList());
 
@@ -145,9 +176,17 @@ public class MentorService {
         grade.setGrade(request.getGrade());
         gradeRepository.save(grade);
     }
+    public List<Grade> getGradesByActivity(Long activityId) {
+        return gradeRepository.findBySessionActivityId(activityId);
+    }
 
     private ViewStudentInfoResponse convertToViewStudentInfoResponse(Student student) {
-        ViewStudentInfoResponse response = new ViewStudentInfoResponse();
+        String userName = student.getUsername();
+        Long studentId = student.getId();
+        String email = student.getEmail();
+        LocalDate joinDate = student.getJoinDate();
+        boolean isLeader = student.isLeader();
+        ViewStudentInfoResponse response = new ViewStudentInfoResponse(userName, studentId, email, joinDate, isLeader);
         response.setUserName(student.getUsername());
         response.setStudentId(student.getId());
         response.setEmail(student.getEmail());

@@ -1,6 +1,7 @@
 package com.ibm.internshipTool.controllers;
 import com.ibm.internshipTool.requests.AttendanceUpdateRequest;
 import com.ibm.internshipTool.requests.GradeRequest;
+import com.ibm.internshipTool.responses.MemberListResponse;
 import com.ibm.internshipTool.responses.ShowTeamsResponse;
 import com.ibm.internshipTool.responses.TeamListResponse;
 import com.ibm.internshipTool.services.MentorService;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/v1")
 public class MentorController {
