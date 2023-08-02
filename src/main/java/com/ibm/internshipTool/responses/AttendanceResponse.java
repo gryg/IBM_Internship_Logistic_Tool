@@ -4,9 +4,16 @@ public class AttendanceResponse {
     private String date;
     private boolean status;
 
-    // Constructors, getters, and setters
+    public String getDate() {
+        return date;
+    }
+
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     public void setStatus(boolean status) {

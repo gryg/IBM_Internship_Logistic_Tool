@@ -28,11 +28,11 @@ public class ActivityController {
     }
 
     @GetMapping("/activity/{activityId}/student/{studentId}/grade/")
-    public ResponseEntity<ListOfGradesResponse> getStudentGradesForActivity(
+    public ResponseEntity<ListOfGradesResponse> getStudentGradesForActivityAndStudent(
             @PathVariable Long activityId,
             @PathVariable Long studentId
     ) {
-        List<Grade> grades = activityService.getStudentGradesForActivity(activityId, studentId);
+        List<Grade> grades = activityService.getStudentGradesForActivityAndStudent(activityId, studentId);
 
         // Convert the list of grades to ListOfGradesResponse format
         List<GradeResponse> gradeResponses = new ArrayList<>();
@@ -49,7 +49,8 @@ public class ActivityController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/activity/{activityId}/student/{studentId}/attendance/")
+
+    @GetMapping(value = "/activity/{activityId}/student/{studentId}/attendance/")
     public ResponseEntity<ListOfAttendancesResponse> getStudentAttendancesForActivity(
             @PathVariable Long activityId,
             @PathVariable Long studentId
@@ -71,41 +72,68 @@ public class ActivityController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/activity/{activityId}/session/{sessionId}/student/{studentId}/grade")
+
+
+    @GetMapping("/session/{sessionId}/student/{studentId}/grade")
     public ResponseEntity<GradeResponse> getStudentGradeForSession(
-            @PathVariable Long activityId,
             @PathVariable Long sessionId,
             @PathVariable Long studentId
     ) {
+        // Get the activityId based on the sessionId
+        Long activityId = activityService.getActivityIdBySessionId(sessionId);
+
+        // If activityId is null, then the sessionId does not exist, return 404 Not Found
+        if (activityId == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Call the ActivityService method to get the grade for the given sessionId and studentId
         Grade grade = activityService.getStudentGradeForSession(activityId, sessionId, studentId);
 
+        // If grade is null, then the grade does not exist, return 404 Not Found
         if (grade == null) {
             return ResponseEntity.notFound().build();
         }
 
+        // Create the GradeResponse object
         GradeResponse response = new GradeResponse();
         response.setDate(grade.getSession().getSessionDate().toString());
         response.setGrade(grade.getGrade());
 
+        // Return the ResponseEntity with the GradeResponse
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/activity/{activityId}/session/{sessionId}/student/{studentId}/attendance")
+    @GetMapping("/session/{sessionId}/student/{studentId}/attendance")
     public ResponseEntity<AttendanceResponse> getStudentAttendanceForSession(
-            @PathVariable Long activityId,
+//            @PathVariable Long activityId,
             @PathVariable Long sessionId,
             @PathVariable Long studentId
     ) {
-        Attendance attendance = activityService.getStudentAttendanceForSession(activityId, sessionId, studentId);
+        // Get the activityId based on the sessionId
+        Long activityId = activityService.getActivityIdBySessionId(sessionId);
 
+        // If activityId is null, then the sessionId does not exist, return 404 Not Found
+        if (activityId == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Call the ActivityService method to get the attendance for the given sessionId and studentId
+        Attendance attendance = activityService.getStudentAttendanceForSession(sessionId, studentId);
+
+        // If attendance is null, then the attendance does not exist, return 404 Not Found
         if (attendance == null) {
             return ResponseEntity.notFound().build();
         }
 
+        // Create the AttendanceResponse object
         AttendanceResponse response = new AttendanceResponse();
         response.setDate(attendance.getSession().getSessionDate().toString());
         response.setStatus(attendance.isAttendance());
 
+        // Return the ResponseEntity with the AttendanceResponse
         return ResponseEntity.ok(response);
     }
+
+
 }

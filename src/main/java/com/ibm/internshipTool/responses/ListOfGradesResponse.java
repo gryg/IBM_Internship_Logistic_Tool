@@ -5,8 +5,11 @@ import java.util.List;
 public class ListOfGradesResponse {
     private List<GradeResponse> grades;
 
-    public void setGrades(List<GradeResponse> gradeResponses) {
+    public List<GradeResponse> getGrades() {
+        return grades;
     }
 
-    // Constructors, getters, and setters
+    public void setGrades(List<GradeResponse> grades) {
+        this.grades = grades;
+    }
 }

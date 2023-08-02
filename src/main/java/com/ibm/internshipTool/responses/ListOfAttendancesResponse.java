@@ -5,7 +5,9 @@ import java.util.List;
 public class ListOfAttendancesResponse {
     private List<AttendanceResponse> attendances;
 
-    // Constructors, getters, and setters
+    public List<AttendanceResponse> getAttendances() {
+        return attendances;
+    }
 
     public void setAttendances(List<AttendanceResponse> attendances) {
         this.attendances = attendances;
