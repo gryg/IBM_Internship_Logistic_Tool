@@ -37,7 +37,7 @@ CREATE TABLE grades (
   student_id INT REFERENCES students (id),
   mentor_id INT REFERENCES mentors (id),
   session_id INT REFERENCES session (id),
-  grade DECIMAL,
+  grade NUMERIC,
   comment VARCHAR
 );
 

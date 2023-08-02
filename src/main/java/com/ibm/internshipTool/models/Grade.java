@@ -2,6 +2,7 @@ package com.ibm.internshipTool.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 @Entity
@@ -24,10 +25,10 @@ public class Grade {
     @JoinColumn(name = "session_id")
     private Session session;
 
-    //@Column ?
+    @Column(name = "grade", columnDefinition = "numeric")
     private Double grade;
 
-    //@Column ?
+    @Column(name = "comment")
     private String comment;
 
     public Grade() {

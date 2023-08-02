@@ -23,6 +23,9 @@ public class Team {
 
 //    private List<Student> members; // Add this field
 
+
+    public Team() {
+    }
     public Team(Long id, String teamName, Student leader, Activity activity) {
         this.id = id;
         this.teamName = teamName;
