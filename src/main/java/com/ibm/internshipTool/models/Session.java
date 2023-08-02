@@ -48,6 +48,7 @@ public class Session {
         return sessionDate;
     }
 
+
     public void setSessionDate(LocalDate sessionDate) {
         this.sessionDate = sessionDate;
     }

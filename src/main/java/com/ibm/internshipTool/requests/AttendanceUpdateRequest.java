@@ -1,20 +1,22 @@
 package com.ibm.internshipTool.requests;
 
 public class AttendanceUpdateRequest {
-    private boolean status;
+    private boolean attendance;
+
+    // Constructors, getters, and setters
 
     public AttendanceUpdateRequest() {
     }
 
-    public AttendanceUpdateRequest(boolean status) {
-        this.status = status;
+    public AttendanceUpdateRequest(boolean attendance) {
+        this.attendance = attendance;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isAttendance() {
+        return attendance;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setAttendance(boolean attendance) {
+        this.attendance = attendance;
     }
 }

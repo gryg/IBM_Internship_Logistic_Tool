@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/v1")
 public class MentorController {
 
     private final MentorService mentorService;
@@ -48,6 +48,7 @@ public class MentorController {
         mentorService.updateAttendanceRecord(activityId, sessionId, studentId, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @PutMapping("/activity/{activityId}/session/{sessionId}/student/{studentId}/grading")
     public ResponseEntity<Void> updateGrades(
